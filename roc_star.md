@@ -1,4 +1,4 @@
-﻿<style> body { column-count: 2 }; </style>
+
 
 
 # Roc-star : An objective function for ROC-AUC that actually works.
@@ -18,7 +18,7 @@ We'd like a loss function that gives us higher scores and less trouble.
 We present such a  function here.
 
 
-# The Problem : AUC is bumpy
+## The Problem : AUC is bumpy
 
 My favorite working definition of AUC is this:   Let's call the binary class labels  "Black" (0) and "White" (1).   Pick one black element at random and let *x* be its predicted value.  Now pick a random white element with value *y*.  Then,
 
@@ -30,7 +30,7 @@ We can see that the AUC score is not differentiable (a smooth curve with respect
 
 That's a problem for Neural Nets, where we need a differentiable loss function.   
 
-# The Search : Ancients and Artifacts.
+## The Search : Ancients and Artifacts.
 
 So we set out to find a *differentiable* function which is close as possible to AUC.
 
@@ -84,9 +84,9 @@ To make a loss function from this, we could just flip the x < y comparison to x 
 
 *Yan et. al* surveys - and then rejects - past work-arounds using continuous approximations to the step (Heaviside) function, such as a Sigmoid curve.   Then they pull this out of a hat :
 
-<img style="max-height:250px; max-width:500px; width:500px; height:250px"  src='https://raw.githubusercontent.com/iridiumblue/about/master/roc.png' />
+<img style="max-height:250px; max-width:750px; "  src='https://raw.githubusercontent.com/iridiumblue/about/master/roc.png' />
 
-Yann got this forumula by applying a series of changes to the WMW.  They are :
+Yann got this forumula by applying a series of changes to the WMW:
 
  1. x<y has been flipped to y<x, to make it a loss (higher is worse.)   So wrong-ordered pairs contribute to the loss.
  2. Instead of treating all pairs equally, weight is given to the how far apart the pair is.
