@@ -86,7 +86,7 @@ To make a loss function from this, we could just flip the x < y comparison to x 
 
 <img style="max-height:250px; max-width:750px; "  src='https://raw.githubusercontent.com/iridiumblue/about/master/roc.png' />
 
-Yann got this forumula by applying a series of changes to the WMW:
+Yan got this forumula by applying a series of changes to the WMW:
 
  1. x<y has been flipped to y<x, to make it a loss (higher is worse.)   So wrong-ordered pairs contribute to the loss.
  2. Instead of treating all pairs equally, weight is given to the how far apart the pair is.
@@ -101,7 +101,7 @@ Fortunately,  raising ReLu to a power fixes this.  ReLu^p with p>1 is differenti
 Now back to Γ :  Γ provides a 'padding' which is enforced between two points.   We penalize not only wrong-ordered pairs, but also right-ordered pairs which are *too close*.  If a right-ordered pair is too close, its elements are at risk of getting swapped in the future by the random jiggling of a stochastic neural net.  The idea is to keep them moving apart until they reach a comfortable distance.  
 
 
-And that's the basic idea as outlined in the paper.   We now ake some refinements regarding Γ and p.
+And that's the basic idea as outlined in the paper.   We now make some refinements regarding Γ and p.
 
 
 ## About that Γ and p
@@ -146,7 +146,9 @@ In this way, white and black subsamples fit easily into GPU memory.   By reusing
 
 Here's the batch-loss function in PyTorch:
   
-def roc_star_loss( _y_true, y_pred, gamma, _epoch_true, epoch_pred):
+
+
+        def roc_star_loss( _y_true, y_pred, gamma, _epoch_true, epoch_pred):
         """
         Nearly direct loss function for AUC.
         See article,
@@ -161,8 +163,8 @@ def roc_star_loss( _y_true, y_pred, gamma, _epoch_true, epoch_pred):
         #convert labels to boolean
         y_true = (_y_true>=0.50)
         epoch_true = (_epoch_true>=0.50)
-
-        # if batch is either all true or false return small random stub value.
+	
+	# if batch is either all true or false return small random stub value.
         if torch.sum(y_true)==0 or torch.sum(y_true) == y_true.shape[0]: return torch.sum(y_pred)*1e-8
 
         pos = y_pred[y_true]
@@ -182,7 +184,7 @@ def roc_star_loss( _y_true, y_pred, gamma, _epoch_true, epoch_pred):
         ln_pos = pos.shape[0]
         ln_neg = neg.shape[0]
 
-        # sum positive batch elements agaionst (subsampled) negative elements
+        # sum positive batch elements against (subsampled) negative elements
         if ln_pos>0 :
             pos_expand = pos.view(-1,1).expand(-1,epoch_neg.shape[0]).reshape(-1)
             neg_expand = epoch_neg.repeat(ln_pos)
@@ -222,7 +224,7 @@ def roc_star_loss( _y_true, y_pred, gamma, _epoch_true, epoch_pred):
 
 Note that there are some extra parameters.   We are passing in the training set from the *last epoch*.    Since the entire training set doesn't change much from one epoch to the next, the loss function can compare each prediction again a slightly out-of-date training set.  This simplifies debugging, and appears to benefit performance as the 'background' epoch isn't changing from one batch to the next.    
 
-Similarly, Γ is an expensive calculation.    To We still use the sub-sampling trick, but increase the size of the sub-samples to ~10,000 to ensure an accurate estimate.   To keep performance clipping along, we recompute this value only once per epoch.  Here's the function to do that :
+Similarly, Γ is an expensive calculation.    We still use the sub-sampling trick, but increase the size of the sub-samples to ~10,000 to ensure an accurate estimate.   To keep performance clipping along, we recompute this value only once per epoch.  Here's the function to do that :
  
     
     def epoch_update_gamma(y_true,y_pred, epoch=-1,delta=2):
@@ -296,6 +298,6 @@ Here's the helicopter view showing how to use the two functions as we loop on ep
         epoch_gamma = epoch_update_gamma(last_epoch_y_t, last_epoch_y_pred, epoch)
         #...
 
-Complete working code.
+TODO Complete working code.
 
-Sample runs.
+TODO Sample runs.
