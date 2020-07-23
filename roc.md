@@ -69,8 +69,6 @@ form of a new loss function.
 (Don’t try it, it blows up.) : [TFLearn function
 roc-auc-score](http://tflearn.org/objectives/#roc-auc-score)
 
-[0.85]{}
-
 
     # http://tflearn.org/objectives/#roc-auc-score
     def roc_auc_score(y_pred, y_true):
