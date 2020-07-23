@@ -1,16 +1,8 @@
----
-author:
-- 
-title: |
+
     Roc-star : A more direct AUC loss function to challenge binary
     cross-entropy.
----
 
-![image](email)
 
- {#section .unnumbered}
-
-[1.0]{}
 
 For binary classification. everyone loves the Area Under the Curve (AUC)
 metric, but nobody targets it directly in their loss function. Instead
