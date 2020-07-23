@@ -1,7 +1,5 @@
 
-
-
-#Roc-star : A more direct AUC loss function to challenge binary cross-entropy.
+# Roc-star : A more direct AUC loss function to challenge binary cross-entropy.
 
 For binary classification. everyone loves the Area Under the Curve (AUC)
 metric, but nobody targets it directly in their loss function. Instead
@@ -32,8 +30,7 @@ We’d like a loss function that gives us higher scores and less trouble.
 
 We present such a function here.
 
- {#section-1 .unnumbered}
-
+## The Problem : AUC is bumpy
 Our favorite working definition of AUC is this: Let’s call the binary
 class labels “Black” (0) and “White” (1). Pick one black element at
 random and let *x* be its predicted value. Now pick a random white
@@ -57,7 +54,7 @@ So the AUC makes no smooth transitions.
 That’s a problem for Neural Nets, where we need a differentiable loss
 function.
 
- {#section-2 .unnumbered}
+## The Search : Ancients and Artifacts.
 
 So we set out to find a differentiable function which is close as
 possible to AUC.
