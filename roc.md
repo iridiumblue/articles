@@ -142,7 +142,7 @@ Yan et al. got this forumula by applying a series of changes to (1):
 
 3.  That weight is raised to the power of *p*.
 
-4.  We add a padding $\Gamma$ to that distance.
+4.  We add a padding Γ to that distance.
 
 We’ll go through these in turn. 1 is clear enough. There’s a little more
 to 2 than meets the eye. It makes intuitive sense that wrong-ordered
@@ -151,7 +151,7 @@ interesting is also happening as that separation approaches 0. The loss
 goes to zero linearly, rather than a step-function. So we’ve gotten rid
 of the discontinuity.
 
-In fact, if *p* were 1 and $\Gamma$ were 0, the loss would simply be our
+In fact, if *p* were 1 and Γ were 0, the loss would simply be our
 old friend ReLU(*x*-*y*). But in this case we notice a hiccup, which
 reveals the need for the exponent *p*. ReLU is not differentiable at 0.
 That’s not much of a problem in ReLu’s more accustomed role as an
@@ -163,7 +163,7 @@ Fortunately, raising ReLu to a power fixes this. $ReLU^\textit{p}$ with
 *p*&gt;1 is differentiable everywhere. OK, so *p*&gt;1. (We’ve added
 this motivation for p&gt;1; it’s not in Yan’s paper.)
 
-Now back to $\Gamma$ : $\Gamma$ provides a ’padding’ which is enforced
+Now back to Γ : Γ provides a ’padding’ which is enforced
 between two points. We penalize not only wrong-ordered pairs, but also
 right-ordered pairs which are too close. If a right-ordered pair is too
 close, its elements are at risk of getting swapped in the future by the
@@ -176,8 +176,8 @@ though. we need to make some refinements.
  {#section-4 .unnumbered}
 
 Here we break a bit with the paper. Yan et al. seem a little squeamish
-on the topic of choosing $\Gamma$ and *p*, offering only that *p* = 2 or
-*p* = 3 seems good and that $\Gamma$ should be somewhere between 0.10
+on the topic of choosing Γ and *p*, offering only that *p* = 2 or
+*p* = 3 seems good and that Γ should be somewhere between 0.10
 and 0.70. Yan et al. essentially wish us luck with these parameters and
 bow out.
 
@@ -186,30 +186,30 @@ function should be a sum-of-squares. (One reason for this is that it
 ensures the loss function is not only differentiable, but also
 *convex*.)
 
-Second and more importantly, let’s take a look at $\Gamma$. The
+Second and more importantly, let’s take a look at Γ. The
 heuristic of ’somewhere from 0.10 to 0.70’ looks strange on the face of
 it; even if the predictions were normalized to be 0&lt;x&lt;1, this
 guidance seems overbroad, indifferent to the underlying distributions,
 and a little weird.
 
-We’re going to derive $\Gamma$ from the training set.
+We’re going to derive Γ from the training set.
 
 Consider the training set and its Black/White pairs,
 $\textbf{B} \times \textbf{W}$. There are |**B**||**W**| pairs in this
 set. Of these, |**B**| |**W**| AUC are right-ordered. So, the number of
 wrong-ordered pairs is |**B**||**W**| (1-AUC)
 
-When $\Gamma$ is zero, only these wrong-ordered pairs are in motion
-(have positive loss.) A positive $\Gamma$ would expand the set of moving
+When Γ is zero, only these wrong-ordered pairs are in motion
+(have positive loss.) A positive Γ would expand the set of moving
 pairs to include some pairs which are right-ordered, but too close.
-Instead of worrying about $\Gamma$’s numeric value, we’ll specify just
+Instead of worrying about Γ’s numeric value, we’ll specify just
 how many too-close pairs we want to set in motion:
 
 We define a constant $\delta$ which fixes the proportion of too-close
 pairs to wrong-ordered pairs.
 
-We fix this $\delta$ throughout training and update $\Gamma$ to conform
-to it. For given $\delta$, we find the $\Gamma$ that gives positive loss
+We fix this $\delta$ throughout training and update Γ to conform
+to it. For given $\delta$, we find the Γ that gives positive loss
 to both too-close and wrong-ordered pairs by :
 
 In our experiments we found that $delta$ can range from 0.5 to 2.0, with
@@ -328,7 +328,7 @@ each prediction against a slightly out-of-date training set. This
 simplifies debugging, and appears to benefit performance as the
 ’background’ epoch isn’t changing from one batch to the next.
 
-Similarly, $\Gamma$ is an expensive calculation. We again use the
+Similarly, Γ is an expensive calculation. We again use the
 sub-sampling trick, but increase the size of the sub-samples to  10,000
 to ensure an accurate estimate. To keep performance clipping along, we
 recompute this value only once per epoch. Here’s the function to do that
